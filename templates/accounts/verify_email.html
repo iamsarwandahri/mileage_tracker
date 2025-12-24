@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Email{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="content-card mt-4">
+            <div class="text-center mb-4">
+                <!-- Verification Icon -->
+                <div class="mb-3">
+                    <div class="verification-icon-circle mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#2596be" class="bi bi-envelope-check" viewBox="0 0 16 16">
+                            <path d="M2 2a2 2 0 0 0-2 2v8.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V4a2 2 0 0 0-2-2H2Z"/>
+                            <path d="M15.854 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0Z"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <h2 class="fw-bold mb-1">Verify Your Email</h2>
+                <p class="text-muted">We've sent a verification code to your email address</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                        <div class="d-flex align-items-center">
+                            {% if message.tags == 'success' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg>
+                            {% elif message.tags == 'warning' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                </svg>
+                            {% endif %}
+                            <div>{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Instructions Box -->
+            <div class="alert alert-info mb-4">
+                <div class="d-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill me-2 flex-shrink-0" viewBox="0 0 16 16">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                    </svg>
+                    <div>
+                        <strong>Check your email</strong>
+                        <p class="mb-0">We've sent a 6-digit verification code to your email address. Please enter it below to complete your registration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" class="mb-4">
+                {% csrf_token %}
+                
+                <div class="form-group mb-4">
+                    <label for="id_code" class="form-label fw-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-shield-check me-2" viewBox="0 0 16 16">
+                            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                            <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                        Verification Code
+                    </label>
+                    
+                    <!-- 6-Digit Input Boxes -->
+                    <div class="verification-code-inputs mb-3">
+                        <div class="row justify-content-center g-2">
+                            {% for i in "123456" %}
+                            <div class="col-2">
+                                <input type="text" 
+                                       maxlength="1" 
+                                       class="form-control form-control-lg text-center verification-digit" 
+                                       data-index="{{ forloop.counter0 }}"
+                                       inputmode="numeric"
+                                       pattern="[0-9]*"
+                                       onkeyup="moveToNext(this)"
+                                       onkeydown="handleBackspace(this, event)"
+                                       style="font-size: 1.5rem; font-weight: bold; height: 60px;">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden Input for Form Submission -->
+                    <input type="hidden" name="code" id="id_code">
+                    
+                    <div class="form-text small text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#2596be" class="bi bi-info-circle me-1" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        Enter the 6-digit code sent to your email
+                    </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg py-3 fw-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle me-2" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                        </svg>
+                        Verify Email
+                    </button>
+                </div>
+            </form>
+
+            <!-- Resend Code & Help Section -->
+            <div class="border-top pt-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="text-center">
+                            <p class="small text-muted mb-2">Didn't receive the code?</p>
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="resendCode()" id="resend-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                                Resend Code
+                            </button>
+                            <div class="small text-muted mt-2" id="resend-timer" style="display: none;">
+                                Resend available in <span id="countdown">60</span> seconds
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <p class="small text-muted mb-2">Need help?</p>
+                            <a href="mailto:support@mileagetracker.com" class="btn btn-outline-secondary btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-envelope me-1" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                                </svg>
+                                Contact Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 6-Digit Verification Code Input Logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.verification-digit');
+        const hiddenInput = document.getElementById('id_code');
+        
+        // Focus first input on load
+        if (inputs.length > 0) {
+            inputs[0].focus();
+        }
+        
+        // Update hidden input value
+        function updateHiddenInput() {
+            let code = '';
+            inputs.forEach(input => {
+                code += input.value || '';
+            });
+            hiddenInput.value = code;
+        }
+        
+        // Initialize hidden input
+        updateHiddenInput();
+        
+        // Add event listeners to all inputs
+        inputs.forEach(input => {
+            input.addEventListener('input', function(e) {
+                // Only allow numbers
+                if (this.value && !/^\d$/.test(this.value)) {
+                    this.value = '';
+                    return;
+                }
+                
+                // Move to next input if current is filled
+                if (this.value.length === 1) {
+                    const index = parseInt(this.dataset.index);
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                }
+                
+                updateHiddenInput();
+            });
+        });
+    });
+    
+    // Move to next input on keyup
+    function moveToNext(input) {
+        const index = parseInt(input.dataset.index);
+        if (input.value.length === 1 && index < 5) {
+            const nextInput = document.querySelector(`.verification-digit[data-index="${index + 1}"]`);
+            if (nextInput) {
+                nextInput.focus();
+            }
+        }
+    }
+    
+    // Handle backspace to move to previous input
+    function handleBackspace(input, event) {
+        if (event.key === 'Backspace' && input.value === '') {
+            const index = parseInt(input.dataset.index);
+            if (index > 0) {
+                const prevInput = document.querySelector(`.verification-digit[data-index="${index - 1}"]`);
+                if (prevInput) {
+                    prevInput.focus();
+                    prevInput.value = '';
+                    updateHiddenInput();
+                }
+            }
+        }
+    }
+    
+    // Update hidden input function (called from event listeners)
+    function updateHiddenInput() {
+        const inputs = document.querySelectorAll('.verification-digit');
+        const hiddenInput = document.getElementById('id_code');
+        let code = '';
+        inputs.forEach(input => {
+            code += input.value || '';
+        });
+        hiddenInput.value = code;
+    }
+    
+    // Resend code functionality
+    function resendCode() {
+        const btn = document.getElementById('resend-btn');
+        const timer = document.getElementById('resend-timer');
+        const countdown = document.getElementById('countdown');
+        
+        // Disable button and show timer
+        btn.disabled = true;
+        btn.classList.add('disabled');
+        timer.style.display = 'block';
+        
+        // Start countdown from 60 seconds
+        let timeLeft = 60;
+        countdown.textContent = timeLeft;
+        
+        const countdownInterval = setInterval(() => {
+            timeLeft--;
+            countdown.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                btn.disabled = false;
+                btn.classList.remove('disabled');
+                timer.style.display = 'none';
+                
+                // Show success message
+                alert('Verification code has been resent to your email.');
+            }
+        }, 1000);
+    }
+</script>
+
+<style>
+    /* Verification icon */
+    .verification-icon-circle {
+        width: 80px;
+        height: 80px;
+        background-color: #f0f7ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #2596be;
+    }
+    
+    /* Verification code input boxes */
+    .verification-digit {
+        font-size: 1.5rem !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        height: 60px !important;
+        border: 2px solid #dee2e6 !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .verification-digit:focus {
+        border-color: #2596be !important;
+        box-shadow: 0 0 0 0.25rem rgba(37, 150, 190, 0.25) !important;
+        transform: translateY(-2px);
+    }
+    
+    .verification-digit.filled {
+        border-color: #2596be;
+        background-color: #f0f7ff;
+    }
+    
+    /* Alert styling */
+    .alert-info {
+        background-color: #cff4fc;
+        border-color: #b6effb;
+        color: #055160;
+        border-radius: 8px;
+        border-left: 4px solid #0dcaf0;
+    }
+    
+    /* Form styling */
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-text {
+        color: #6c757d;
+    }
+    
+    /* Button styling */
+    .btn-primary {
+        background-color: #2596be;
+        border-color: #2596be;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .btn-primary:hover {
+        background-color: #1d7a9c;
+        border-color: #1d7a9c;
+    }
+    
+    .btn-outline-primary {
+        color: #2596be;
+        border-color: #2596be;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #2596be;
+        border-color: #2596be;
+        color: white;
+    }
+    
+    .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+    }
+    
+    /* Resend timer */
+    #resend-timer {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    /* Content card */
+    .content-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .verification-digit {
+            height: 50px !important;
+            font-size: 1.25rem !important;
+        }
+        
+        .content-card {
+            padding: 1.5rem;
+        }
+        
+        .col-md-6 {
+            margin-bottom: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .verification-digit {
+            height: 45px !important;
+            font-size: 1.1rem !important;
+        }
+        
+        .row.justify-content-center.g-2 .col-2 {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+    }
+</style>
+{% endblock %}

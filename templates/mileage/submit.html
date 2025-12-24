@@ -1,0 +1,655 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Mileage{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="content-card mt-4">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#2596be" class="bi bi-speedometer2" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+                        <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923 1.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+                    </svg>
+                </div>
+                <h2 class="fw-bold">Daily Mileage Submission</h2>
+                <p class="text-muted">Track your vehicle mileage with photos</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                        <div class="d-flex align-items-center">
+                            {% if message.tags == 'success' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg>
+                            {% elif message.tags == 'warning' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                </svg>
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                </svg>
+                            {% endif %}
+                            <div>{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger mb-4">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <!-- Start KM -->
+                    <div class="col-md-6 mb-4">
+                        <div class="form-group">
+                            <label for="{{ form.start_km.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-play-fill me-2" viewBox="0 0 16 16">
+                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                </svg>
+                                Start KM
+                            </label>
+                            <input type="number" 
+                                   name="{{ form.start_km.name }}" 
+                                   id="{{ form.start_km.id_for_label }}" 
+                                   class="form-control form-control-lg {% if form.start_km.errors %}is-invalid{% endif %}" 
+                                   value="{{ form.start_km.value|default_if_none:'' }}"
+                                   placeholder="Enter starting kilometer"
+                                   step="1"
+                                   min="0">
+                            {% if form.start_km.help_text %}
+                                <div class="form-text small mt-1">{{ form.start_km.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.start_km.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                            {% if form.start_km.help_text %}
+                                <div class="form-text small mt-1">{{ form.start_km.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.start_km.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- End KM -->
+                    <div class="col-md-6 mb-4">
+                        <div class="form-group">
+                            <label for="{{ form.end_km.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-stop-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/>
+                                </svg>
+                                End KM
+                            </label>
+                            <input type="number" 
+                                   name="{{ form.end_km.name }}" 
+                                   id="{{ form.end_km.id_for_label }}" 
+                                   class="form-control form-control-lg {% if form.end_km.errors %}is-invalid{% endif %}" 
+                                   value="{{ form.end_km.value|default_if_none:'' }}"
+                                   placeholder="Enter ending kilometer"
+                                   step="1"
+                                   min="0">
+                            {% if form.end_km.help_text %}
+                                <div class="form-text small mt-1">{{ form.end_km.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.end_km.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                            {% if form.end_km.help_text %}
+                                <div class="form-text small mt-1">{{ form.end_km.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.end_km.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload Section -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="form-group">
+                            <label for="{{ form.start_photo.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-camera me-2" viewBox="0 0 16 16">
+                                    <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/>
+                                    <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                                </svg>
+                                Start Photo
+                            </label>
+                               <div class="file-upload-area border rounded p-4 text-center {% if form.start_photo.errors %}border-danger{% else %}border-dashed{% endif %}"
+                                   id="start-photo-dropzone">
+                                <input type="file" 
+                                       name="{{ form.start_photo.name }}" 
+                                       id="{{ form.start_photo.id_for_label }}" 
+                                       class="d-none" 
+                                       accept="image/*"
+                                       capture="environment">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ccc" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                                        <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                                    </svg>
+                                </div>
+                                <p class="mb-1 text-muted">Click to upload start km photo</p>
+                                <small class="text-muted">or drag and drop</small>
+                                <div id="start-photo-preview" class="mt-3"></div>
+                            </div>
+                            {% if form.start_photo.help_text %}
+                                <div class="form-text small mt-1">{{ form.start_photo.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.start_photo.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="form-group">
+                            <label for="{{ form.end_photo.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-camera-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                </svg>
+                                End Photo
+                            </label>
+                               <div class="file-upload-area border rounded p-4 text-center {% if form.end_photo.errors %}border-danger{% else %}border-dashed{% endif %}"
+                                   id="end-photo-dropzone">
+                                <input type="file" 
+                                       name="{{ form.end_photo.name }}" 
+                                       id="{{ form.end_photo.id_for_label }}" 
+                                       class="d-none" 
+                                       accept="image/*"
+                                       capture="environment">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ccc" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                                        <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                                    </svg>
+                                </div>
+                                <p class="mb-1 text-muted">Click to upload end km photo</p>
+                                <small class="text-muted">or drag and drop</small>
+                                <div id="end-photo-preview" class="mt-3"></div>
+                            </div>
+                            {% if form.end_photo.help_text %}
+                                <div class="form-text small mt-1">{{ form.end_photo.help_text }}</div>
+                            {% endif %}
+                            {% for error in form.end_photo.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculated Distance Display -->
+                <div class="alert alert-info mb-4" id="distance-calc" style="{% if form.instance and form.instance.distance %}display: flex;{% else %}display: none;{% endif %}">
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#055160" class="bi bi-calculator me-2" viewBox="0 0 16 16">
+                            <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                            <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+                        </svg>
+                        <div>
+                            <strong>Calculated Distance:</strong> <span id="distance-value">{% if form.instance and form.instance.distance %}{{ form.instance.distance }}{% else %}0{% endif %}</span> km
+                        </div>
+                    </div>
+                </div>
+
+            
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" name="action" value="submit" class="btn btn-primary btn-lg py-3 fw-semibold" onclick="return validateSubmit()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-cloud-upload me-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                            <path fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                        </svg>
+                        Submit Mileage
+                    </button>
+                    <button type="submit" name="action" value="save" class="btn btn-outline-success btn-lg py-3 fw-semibold" onclick="return validateSave()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Save For Later
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Image Preview & Compression -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.1.1/compressor.min.js"></script>
+<script>
+// Validation functions for Save and Submit
+function validateSave() {
+    const startKmInput = document.getElementById('{{ form.start_km.id_for_label }}');
+    const startPhotoInput = document.getElementById('{{ form.start_photo.id_for_label }}');
+    
+    const startKm = startKmInput.value.trim();
+    const startPhotoFiles = startPhotoInput.files.length > 0;
+    const startPhotoExists = '{{ form.instance.start_photo }}' !== '';
+    const startPhoto = startPhotoFiles || startPhotoExists;
+    
+    // Validate start KM
+    if (!startKm) {
+        alert('Start KM is required to save.');
+        startKmInput.focus();
+        return false;
+    }
+    
+    const startKmValue = parseFloat(startKm);
+    if (isNaN(startKmValue) || startKmValue < 0) {
+        alert('Start KM cannot be negative.');
+        startKmInput.focus();
+        return false;
+    }
+    
+    // Validate start photo
+    if (!startPhoto) {
+        alert('Start Photo is required to save.');
+        startPhotoInput.focus();
+        return false;
+    }
+    
+    return true;
+}
+
+function validateSubmit() {
+    const startKmInput = document.getElementById('{{ form.start_km.id_for_label }}');
+    const endKmInput = document.getElementById('{{ form.end_km.id_for_label }}');
+    const startPhotoInput = document.getElementById('{{ form.start_photo.id_for_label }}');
+    const endPhotoInput = document.getElementById('{{ form.end_photo.id_for_label }}');
+    
+    const startKm = startKmInput.value.trim();
+    const endKm = endKmInput.value.trim();
+    const startPhotoFiles = startPhotoInput.files.length > 0;
+    const endPhotoFiles = endPhotoInput.files.length > 0;
+    const startPhotoExists = '{{ form.instance.start_photo }}' !== '';
+    const endPhotoExists = '{{ form.instance.end_photo }}' !== '';
+    const startPhoto = startPhotoFiles || startPhotoExists;
+    const endPhoto = endPhotoFiles || endPhotoExists;
+    
+    // Validate start KM
+    if (!startKm) {
+        alert('Start KM is required to submit.');
+        startKmInput.focus();
+        return false;
+    }
+    
+    const startKmValue = parseFloat(startKm);
+    if (isNaN(startKmValue) || startKmValue < 0) {
+        alert('Start KM cannot be negative.');
+        startKmInput.focus();
+        return false;
+    }
+    
+    // Validate end KM
+    if (!endKm) {
+        alert('End KM is required to submit.');
+        endKmInput.focus();
+        return false;
+    }
+    
+    const endKmValue = parseFloat(endKm);
+    if (isNaN(endKmValue) || endKmValue < 0) {
+        alert('End KM cannot be negative.');
+        endKmInput.focus();
+        return false;
+    }
+    
+    // Validate end KM > start KM
+    if (endKmValue <= startKmValue) {
+        alert('End KM must be greater than Start KM.');
+        endKmInput.focus();
+        return false;
+    }
+    
+    // Validate start photo
+    if (!startPhoto) {
+        alert('Start Photo is required to submit.');
+        startPhotoInput.focus();
+        return false;
+    }
+    
+    // Validate end photo
+    if (!endPhoto) {
+        alert('End Photo is required to submit.');
+        endPhotoInput.focus();
+        return false;
+    }
+    
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const startInput = document.getElementById('{{ form.start_photo.id_for_label }}');
+    const endInput = document.getElementById('{{ form.end_photo.id_for_label }}');
+    const startKmInput = document.getElementById('{{ form.start_km.id_for_label }}');
+    const endKmInput = document.getElementById('{{ form.end_km.id_for_label }}');
+    const distanceCalc = document.getElementById('distance-calc');
+    const distanceValue = document.getElementById('distance-value');
+    
+    // File upload preview functionality
+    function setupFileUpload(input, previewId, dropzoneId, existingPhotoUrl = null) {
+        const dropzone = document.getElementById(dropzoneId);
+        const preview = document.getElementById(previewId);
+
+        if (!input || !dropzone || !preview) {
+            return; // necessary elements not present
+        }
+        
+        // Show existing photo if available (for drafts)
+        if (existingPhotoUrl && existingPhotoUrl.trim() !== '' && existingPhotoUrl !== 'None') {
+            const img = document.createElement('img');
+            img.src = existingPhotoUrl;
+            img.classList.add('img-thumbnail', 'mt-2');
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '150px';
+            
+            const fileName = document.createElement('div');
+            fileName.className = 'small text-muted mt-1';
+            fileName.textContent = 'Existing photo';
+            
+            preview.appendChild(img);
+            preview.appendChild(fileName);
+            
+            dropzone.classList.remove('border-dashed');
+            dropzone.classList.add('border-success', 'border-2');
+        } else if (input.files.length > 0) {
+            const file = input.files[0];
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.classList.add('img-thumbnail', 'mt-2');
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '150px';
+            
+            const fileName = document.createElement('div');
+            fileName.className = 'small text-muted mt-1';
+            fileName.textContent = file.name;
+            
+            preview.appendChild(img);
+            preview.appendChild(fileName);
+            
+            dropzone.classList.remove('border-dashed');
+            dropzone.classList.add('border-success', 'border-2');
+        }
+        
+        // Handle click on dropzone
+        dropzone.addEventListener('click', function(e) {
+            // Prevent double triggering
+            if (!e.target || e.target.tagName !== 'INPUT') {
+                input.click();
+            }
+        });
+        
+        // Handle file selection
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Clear previous preview
+            preview.innerHTML = '';
+            
+            // Compress image if Compressor available, otherwise use original file
+            if (window.Compressor) {
+                new Compressor(file, {
+                    quality: 0.7,
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                    success(result) {
+                        // Replace file with compressed version
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(result);
+                        input.files = dataTransfer.files;
+
+                        // Create preview
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(result);
+                        img.classList.add('img-thumbnail', 'mt-2');
+                        img.style.maxWidth = '200px';
+                        img.style.maxHeight = '150px';
+
+                        // Add file name
+                        const fileName = document.createElement('div');
+                        fileName.className = 'small text-muted mt-1';
+                        fileName.textContent = result.name;
+
+                        preview.appendChild(img);
+                        preview.appendChild(fileName);
+
+                        // Update dropzone style
+                        dropzone.classList.remove('border-dashed');
+                        dropzone.classList.add('border-success', 'border-2');
+                    },
+                    error(err) {
+                        console.error('Compression error:', err && err.message ? err.message : err);
+                        // Fallback to showing original file
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(file);
+                        img.classList.add('img-thumbnail', 'mt-2');
+                        img.style.maxWidth = '200px';
+                        img.style.maxHeight = '150px';
+
+                        const fileName = document.createElement('div');
+                        fileName.className = 'small text-muted mt-1';
+                        fileName.textContent = file.name;
+
+                        preview.appendChild(img);
+                        preview.appendChild(fileName);
+                        dropzone.classList.remove('border-dashed');
+                        dropzone.classList.add('border-success', 'border-2');
+                    }
+                });
+            } else {
+                // No compressor available — show selected file directly
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.classList.add('img-thumbnail', 'mt-2');
+                img.style.maxWidth = '200px';
+                img.style.maxHeight = '150px';
+
+                const fileName = document.createElement('div');
+                fileName.className = 'small text-muted mt-1';
+                fileName.textContent = file.name;
+
+                preview.appendChild(img);
+                preview.appendChild(fileName);
+                dropzone.classList.remove('border-dashed');
+                dropzone.classList.add('border-success', 'border-2');
+            }
+        });
+        
+        // Handle drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight(e) {
+            dropzone.classList.add('border-primary', 'border-2');
+        }
+        
+        function unhighlight(e) {
+            dropzone.classList.remove('border-primary', 'border-2');
+            if (e.type === 'drop') {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    // Create a new FileList object and trigger change event
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(files[0]);
+                    input.files = dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                }
+            }
+        }
+    }
+    
+    // Calculate distance
+    function calculateDistance() {
+        const startValue = startKmInput.value.trim();
+        const endValue = endKmInput.value.trim();
+        
+        if (startValue !== '' && endValue !== '' && !isNaN(parseFloat(startValue)) && !isNaN(parseFloat(endValue))) {
+            const start = parseFloat(startValue);
+            const end = parseFloat(endValue);
+            const distance = end - start;
+            
+            if (distance >= 0) {
+                distanceValue.textContent = distance.toFixed(2);
+                distanceCalc.style.display = 'flex';
+            } else {
+                distanceCalc.style.display = 'none';
+            }
+        } else {
+            distanceCalc.style.display = 'none';
+        }
+    }
+    
+    // Initialize file uploads
+    setupFileUpload(startInput, 'start-photo-preview', 'start-photo-dropzone', '{% if form.instance.start_photo %}{{ form.instance.start_photo.url }}{% endif %}');
+    setupFileUpload(endInput, 'end-photo-preview', 'end-photo-dropzone', '{% if form.instance.end_photo %}{{ form.instance.end_photo.url }}{% endif %}');
+    
+    // Additional multiple images preview
+    const addInput = document.getElementById('id_images');
+    const addPreview = document.getElementById('additional-photos-preview');
+    const addDrop = document.getElementById('additional-photo-dropzone');
+
+    function renderAdditionalPreviews(files) {
+        addPreview.innerHTML = '';
+        Array.from(files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            const container = document.createElement('div');
+            container.style.width = '110px';
+            container.style.textAlign = 'center';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.classList.add('img-thumbnail');
+            img.style.maxWidth = '100%';
+            img.style.height = '80px';
+            img.style.objectFit = 'cover';
+
+            const name = document.createElement('div');
+            name.className = 'small text-muted mt-1 text-truncate';
+            name.style.maxWidth = '100px';
+            name.textContent = file.name;
+
+            container.appendChild(img);
+            container.appendChild(name);
+            addPreview.appendChild(container);
+        });
+    }
+
+    if (addDrop && addInput) {
+        addDrop.addEventListener('click', function() { addInput.click(); });
+        addInput.addEventListener('change', function(e) {
+            renderAdditionalPreviews(e.target.files);
+        });
+        ['dragenter','dragover','dragleave','drop'].forEach(ev => addDrop.addEventListener(ev, preventDefaults, false));
+        addDrop.addEventListener('drop', function(e) {
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                const dataTransfer = new DataTransfer();
+                Array.from(files).forEach(f => dataTransfer.items.add(f));
+                addInput.files = dataTransfer.files;
+                renderAdditionalPreviews(addInput.files);
+            }
+        });
+    }
+    
+    // Add distance calculation listeners
+    startKmInput.addEventListener('input', calculateDistance);
+    endKmInput.addEventListener('input', calculateDistance);
+    
+    // Initial calculation
+    calculateDistance();
+});
+</script>
+
+<style>
+    /* File upload area styling */
+    .file-upload-area {
+        background-color: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .file-upload-area:hover {
+        background-color: #f0f7ff;
+        border-color: #2596be;
+    }
+    
+    .border-dashed {
+        border-style: dashed !important;
+    }
+    
+    /* Form field styling */
+    .form-control-lg {
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control-lg:focus {
+        border-color: #2596be;
+        box-shadow: 0 0 0 0.25rem rgba(37, 150, 190, 0.25);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .invalid-feedback {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        color: #dc3545;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .col-md-6 {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
