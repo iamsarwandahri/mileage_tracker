@@ -11,8 +11,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-secret-key-here')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'yourusername.pythonanywhere.com',  # Replace with your PythonAnywhere domain
-    'www.yourusername.pythonanywhere.com',
+    'iamsarwandahri.pythonanywhere.com',  # Replace with your PythonAnywhere domain
+    'www.iamsarwandahri.pythonanywhere.com',
 ]
 
 # Application definition
