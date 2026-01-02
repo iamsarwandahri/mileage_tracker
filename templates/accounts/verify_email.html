@@ -18,7 +18,11 @@
                 </div>
                 
                 <h2 class="fw-bold mb-1">Verify Your Email</h2>
+                {% if pending_email %}
+                <p class="text-muted">We've sent a verification code to <strong>{{ pending_email }}</strong></p>
+                {% else %}
                 <p class="text-muted">We've sent a verification code to your email address</p>
+                {% endif %}
             </div>
 
             {% if messages %}

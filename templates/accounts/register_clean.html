@@ -79,6 +79,49 @@
                                     </svg>
                                 </button>
                             </div>
+                            {% if form.password.help_text %}
+                                <div class="form-text small mt-2">{{ form.password.help_text }}</div>
+                            {% endif %}
+                            <!-- Password Strength Indicator -->
+                            <div class="password-strength mt-2">
+                                <div class="password-strength-bar" id="password-strength-bar"></div>
+                            </div>
+                            <div class="password-requirements small text-muted mt-2">
+                                <div class="row">
+                                    <div class="col-md-6 col-6">
+                                        <div id="length-check" class="text-danger mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                            8+ chars
+                                        </div>
+                                        <div id="uppercase-check" class="text-danger mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                            Uppercase
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-6">
+                                        <div id="number-check" class="text-danger mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                            Number
+                                        </div>
+                                        <div id="special-check" class="text-danger mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                            Special
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                         </div>
                     </div>
@@ -101,9 +144,31 @@
 
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            {{ form.pu_code.label_tag }}
+                            <label for="{{ form.designation.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-briefcase me-2" viewBox="0 0 16 16">
+                                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                                </svg>
+                                {{ form.designation.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.designation }}
+                            {% if form.designation.help_text %}<div class="form-text small mt-1">{{ form.designation.help_text }}</div>{% endif %}
+                            {% for error in form.designation.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 mb-4" id="pu-code-container" style="display: none;">
+                        <div class="form-group">
+                            <label for="{{ form.pu_code.id_for_label }}" class="form-label fw-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2596be" class="bi bi-building me-2" viewBox="0 0 16 16">
+                                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"/>
+                                    <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z"/>
+                                </svg>
+                                {{ form.pu_code.label }} <span class="text-danger">*</span>
+                            </label>
                             {{ form.pu_code }}
-                            {% if form.pu_code.help_text %}<div class="form-text small mt-1">{{ form.pu_code.help_text }}</div>{% endif %}
+                            <div class="form-text small mt-1 text-warning fw-semibold">
+                                ⚠️ PU Code is required for your designation
+                            </div>
                             {% for error in form.pu_code.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                         </div>
                     </div>
@@ -134,18 +199,165 @@
     function togglePassword(passwordId) {
         const passwordField = document.getElementById(passwordId);
         if (!passwordField) return;
+        
+        const button = passwordField.parentNode.querySelector('button');
+        const eyeIcon = button.querySelector('svg');
+        
         if (passwordField.type === 'password') {
             passwordField.type = 'text';
+            eyeIcon.innerHTML = '<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/><path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>';
         } else {
             passwordField.type = 'password';
+            eyeIcon.innerHTML = '<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>';
         }
     }
+    
+    // Password strength checker
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordField = document.getElementById('{{ form.password.id_for_label }}');
+        const strengthBar = document.getElementById('password-strength-bar');
+        const designationField = document.getElementById('{{ form.designation.id_for_label }}');
+        const puCodeContainer = document.getElementById('pu-code-container');
+        const puCodeField = document.getElementById('{{ form.pu_code.id_for_label }}');
+        
+        // Handle designation change to show/hide PU code field
+        if (designationField && puCodeContainer && puCodeField) {
+            designationField.addEventListener('change', function() {
+                const designation = designationField.value;
+                if (designation === 'PUM' || designation === 'WT') {
+                    // Show PU code field with animation
+                    puCodeContainer.style.display = 'block';
+                    puCodeField.setAttribute('required', 'required');
+                    // Scroll to the field
+                    setTimeout(function() {
+                        puCodeContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                } else {
+                    // Hide PU code field
+                    puCodeContainer.style.display = 'none';
+                    puCodeField.removeAttribute('required');
+                    puCodeField.value = ''; // Clear the value
+                }
+            });
+            
+            // Check on page load if designation is already selected (for validation errors)
+            const currentDesignation = designationField.value;
+            if (currentDesignation === 'PUM' || currentDesignation === 'WT') {
+                puCodeContainer.style.display = 'block';
+                puCodeField.setAttribute('required', 'required');
+            }
+        }
+        
+        if (passwordField && strengthBar) {
+            passwordField.addEventListener('input', function() {
+                const password = passwordField.value;
+                let strength = 0;
+                
+                // Check requirements
+                const hasLength = password.length >= 8;
+                const hasUppercase = /[A-Z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};:'",.<>?/\\|`~]/.test(password);
+                
+                // Update requirement checks
+                updateRequirement('length-check', hasLength, '8+ chars');
+                updateRequirement('uppercase-check', hasUppercase, 'Uppercase');
+                updateRequirement('number-check', hasNumber, 'Number');
+                updateRequirement('special-check', hasSpecial, 'Special');
+                
+                // Calculate strength
+                if (hasLength) strength += 25;
+                if (hasUppercase) strength += 25;
+                if (hasNumber) strength += 25;
+                if (hasSpecial) strength += 25;
+                
+                // Update strength bar
+                strengthBar.style.width = strength + '%';
+                
+                // Update strength bar color
+                if (strength < 25) {
+                    strengthBar.style.backgroundColor = '#dc3545'; // Red
+                } else if (strength < 50) {
+                    strengthBar.style.backgroundColor = '#ffc107'; // Yellow
+                } else if (strength < 75) {
+                    strengthBar.style.backgroundColor = '#fd7e14'; // Orange
+                } else {
+                    strengthBar.style.backgroundColor = '#198754'; // Green
+                }
+            });
+        }
+        
+        function updateRequirement(elementId, isValid, text) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (isValid) {
+                    element.className = 'text-success mb-1';
+                    element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-check-circle me-1" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/><path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/></svg>' + text;
+                } else {
+                    element.className = 'text-danger mb-1';
+                    element.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 7 7zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 8z"/><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>' + text;
+                }
+            }
+        }
+    });
 </script>
 
 <style>
-    .form-control-lg { padding: 0.85rem 1rem; font-size: 1rem; border-radius: 8px; }
-    .form-label { display:block; margin-bottom:0.5rem; font-weight:600; }
-    .invalid-feedback { display:block; margin-top:0.25rem; color:#dc3545; }
+    .form-control-lg { 
+        padding: 0.85rem 1rem; 
+        font-size: 1rem; 
+        border-radius: 8px 0 0 8px;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+    .form-control-lg:focus {
+        border-color: #2596be;
+        box-shadow: 0 0 0 0.25rem rgba(37, 150, 190, 0.25);
+    }
+    .form-label { 
+        display:block; 
+        margin-bottom:0.5rem; 
+        font-weight:600; 
+        color: #333;
+    }
+    .invalid-feedback { 
+        display:block; 
+        margin-top:0.25rem; 
+        color:#dc3545; 
+        font-size: 0.875rem;
+    }
+    .input-group .btn-outline-secondary {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 0;
+        background-color: white;
+    }
+    .input-group .btn-outline-secondary:hover {
+        background-color: #f8f9fa;
+    }
+    /* Password strength indicator */
+    .password-strength {
+        height: 6px;
+        border-radius: 3px;
+        background-color: #e9ecef;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    .password-strength-bar {
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease, background-color 0.3s ease;
+        border-radius: 3px;
+    }
+    .password-requirements div {
+        font-size: 0.75rem;
+    }
+    .content-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+    }
 </style>
 
 {% endblock %}

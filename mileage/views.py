@@ -220,36 +220,58 @@ def submit_mileage(request):
 
 @login_required
 def dashboard(request):
-    is_admin_user = is_admin(request.user)
+    # Check user designation for permissions
+    try:
+        profile = request.user.trainerprofile
+        is_admin_user = profile.is_admin()  # PM, PRC, GE, IT
+        is_pum_user = profile.is_pum()
+        is_wt_user = profile.is_wt()
+    except:
+        is_admin_user = is_admin(request.user)
+        is_pum_user = False
+        is_wt_user = False
+    
     is_supervisor_user = request.user.groups.filter(name='Supervisor').exists()
-    is_staff_user = is_admin_user or is_supervisor_user
+    is_staff_user = is_admin_user or is_supervisor_user or is_pum_user
 
     # Filters from GET (only for staff users)
     trainer_id = request.GET.get('trainer') if is_staff_user else None
     date_filter = request.GET.get('date') if is_staff_user else None
 
     # Base queryset based on user permissions
-    if is_staff_user:
-        # Staff users see all records (with supervisor restrictions if applicable)
-        if is_supervisor_user:
-            # Only trainers assigned to this supervisor
-            records = MileageRecord.objects.filter(
-                trainer__trainerprofile__supervisor=request.user
-            ).order_by('-date')
-        else:
-            records = MileageRecord.objects.all().order_by('-date')
-
-        # Apply filters for staff users
+    if is_admin_user:
+        # Admin users (PM, PRC, GE, IT) see ALL records
+        records = MileageRecord.objects.all().order_by('-date')
+        
+        # Apply filters for admin users
         if trainer_id:
             records = records.filter(trainer__id=trainer_id)
         if date_filter:
             records = records.filter(date=date_filter)
-
-        # Trainers for filter dropdown (only for staff users)
-        if is_supervisor_user:
-            trainers = TrainerProfile.objects.filter(supervisor=request.user)
-        else:
-            trainers = TrainerProfile.objects.all()
+        
+        trainers = TrainerProfile.objects.all()
+        
+        context = {
+            'records': records,
+            'trainers': trainers,
+            'is_supervisor': is_supervisor_user,
+            'is_staff': True,
+            'is_admin': is_admin_user,
+            'designation': profile.designation if hasattr(request.user, 'trainerprofile') else None,
+        }
+    elif is_supervisor_user:
+        # Supervisors see only their supervised trainers' records
+        records = MileageRecord.objects.filter(
+            trainer__trainerprofile__supervisor=request.user
+        ).order_by('-date')
+        
+        # Apply filters
+        if trainer_id:
+            records = records.filter(trainer__id=trainer_id)
+        if date_filter:
+            records = records.filter(date=date_filter)
+        
+        trainers = TrainerProfile.objects.filter(supervisor=request.user)
 
         context = {
             'records': records,
@@ -259,7 +281,7 @@ def dashboard(request):
             'is_admin': is_admin_user,
         }
     else:
-        # Regular users only see their own records
+        # WTs and regular users only see their own records
         records = MileageRecord.objects.filter(
             trainer=request.user
         ).order_by('-date')
@@ -268,6 +290,8 @@ def dashboard(request):
             'records': records,
             'is_staff': False,
             'is_admin': is_admin_user,
+            'is_wt': is_wt_user,
+            'designation': profile.designation if hasattr(request.user, 'trainerprofile') else None,
         }
 
     return render(request, 'mileage/dashboard.html', context)

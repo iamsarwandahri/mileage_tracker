@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,12 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'iamsarwandahri.pythonanywhere.com',  # Replace with your PythonAnywhere domain
     'www.iamsarwandahri.pythonanywhere.com',
     '127.0.0.1',
+    'localhost',
+    '.herokuapp.com',
 ]
 
 # Application definition
@@ -32,6 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -69,6 +73,13 @@ DATABASES = {
     }
 }
 
+# Override database for Heroku if DATABASE_URL is present
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,6 +110,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Internationalization
 LANGUAGE_CODE = "en-us"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -116,8 +128,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('ictassistancabi@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('jsfj yuqv ivbm qrnm')
+EMAIL_HOST_USER = 'ictassistancabi@gmail.com'
+EMAIL_HOST_PASSWORD = 'jsfj yuqv ivbm qrnm'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Login URLs

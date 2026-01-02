@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Mark Attendance{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar-check me-2" viewBox="0 0 16 16">
+                            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        </svg>
+                        Mark Attendance
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label fw-semibold">Staff Member</label>
+                            <select name="user_id" id="user_id" class="form-select" required>
+                                <option value="">Select Staff Member</option>
+                                {% for staff in staff_members %}
+                                    <option value="{{ staff.id }}">
+                                        {{ staff.get_full_name }} - {{ staff.trainerprofile.designation }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="date" class="form-label fw-semibold">Date</label>
+                            <input type="date" name="date" id="date" class="form-control" value="{{ today|date:'Y-m-d' }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label fw-semibold">Status</label>
+                            <select name="status" id="status" class="form-select" required>
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="leave">Leave</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="remarks" class="form-label fw-semibold">Remarks (Optional)</label>
+                            <textarea name="remarks" id="remarks" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle me-1" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                            </svg>
+                            Mark Attendance
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Today's Attendance - {{ today|date:'F d, Y' }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if todays_attendance %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Staff Member</th>
+                                        <th>Designation</th>
+                                        <th>Status</th>
+                                        <th>Marked By</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for attendance in todays_attendance %}
+                                        <tr>
+                                            <td>{{ attendance.user.get_full_name }}</td>
+                                            <td>{{ attendance.user.trainerprofile.designation }}</td>
+                                            <td>
+                                                {% if attendance.status == 'present' %}
+                                                    <span class="badge bg-success">Present</span>
+                                                {% elif attendance.status == 'absent' %}
+                                                    <span class="badge bg-danger">Absent</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning">Leave</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ attendance.marked_by.get_full_name }}</td>
+                                            <td>{{ attendance.marked_at|date:'h:i A' }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center py-4">No attendance marked for today yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

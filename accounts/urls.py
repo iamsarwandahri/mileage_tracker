@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (register_user, verify_email, test_email, profile,
                    CustomPasswordResetView, CustomPasswordResetDoneView,
-                   CustomPasswordResetConfirmView, CustomPasswordResetCompleteView)
+                   CustomPasswordResetConfirmView, CustomPasswordResetCompleteView,
+                   CustomPasswordChangeView, mark_attendance, view_attendance)
 from django.contrib.auth import views as auth_views
 
 
@@ -12,7 +13,7 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
 
     path('password_change/', 
-         auth_views.PasswordChangeView.as_view(template_name='accounts/password_change.html'), 
+         CustomPasswordChangeView.as_view(), 
          name='password_change'),
     path('password_change/done/', 
          auth_views.PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html'), 
@@ -22,5 +23,9 @@ urlpatterns = [
     path('password_reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    
+    # Attendance URLs
+    path('attendance/mark/', mark_attendance, name='mark_attendance'),
+    path('attendance/view/', view_attendance, name='view_attendance'),
 
 ]
